@@ -1,0 +1,43 @@
+\documentclass{article}
+\usepackage{listings}
+\usepackage{noto}
+\usepackage[colorlinks=true]{hyperref}
+\begin{document}
+\title{Stonks Bank Account}
+\author{Hasan Diwan}
+{
+    \let\clearpage\relax
+    \maketitle
+}
+\begin{center}
+\maketitle
+\end{center}
+
+I'll save you the trouble... I have zero experience in the fintech
+world, so don't look for it. However, what I do have is multiple
+decades of detail-oriented, borderline obsessive commitment to make
+the code I write well-documented such that it is painfully obvious at
+a first glance that I don't know what I don't know. In that vein\ldots
+
+You had asked how I'd deploy this package on AWS. The most
+straightforward way to do so would be to use Lambda following
+\href{https://docs.aws.amazon.com/lambda/latest/dg/python-package-create.html}{these}
+directions.
+
+Per bottlenecks in my design, the first issue that comes up has
+already been raised in email -- the global nature of the account
+limitations. My design has foregone account-specific withdrawal,
+transaction, and top up limits for the reason that I'm keeping this
+under 5 hours from start-to-finish (including documentation, running
+tests, deploying, checking in, and composing the email to you guys
+pointing you to said repository).
+
+In terms of load, there's the well-known cPython global interpreter lock, which renders threading
+practically useless in python. There are well-documented ways to get
+around this -- Python 3.9's \href{https://docs.python.org/3/library/multiprocessing.html}{multiprocessing
+  module} seeming to be the recommendation of choice right now. Others include
+running the program under \href{https://ironpython.net/}{ironpython}
+or \href{https://jython.org}{jython}, neither of which were attempted for reasons of time.
+
+The log is a simple dictionary. This will also not be persistent, so will need to be shoved somewhere. I'd suggest leveraging syslog, if possible. 
+\end{document}
